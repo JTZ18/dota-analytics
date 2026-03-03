@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+data/raw/players/
+data/raw/matches/
+data/raw/heroes/
+.python-version
