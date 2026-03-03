@@ -607,6 +607,321 @@ svg text { font-family: system-ui, sans-serif; }
 .rec-hero-games { color: #888; font-size: 0.75rem; font-family: monospace; }
 
 /* ===== RESPONSIVE ===== */
+/* ===== PLAYER PROFILE ===== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #16213e;
+  border-radius: 10px;
+  border: 1px solid #222;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.profile-header .profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  border: 3px solid #d4a64e;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.profile-header .profile-info {
+  flex: 1;
+  min-width: 180px;
+}
+.profile-header .profile-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+}
+.profile-header .profile-medal {
+  font-size: 0.85rem;
+  color: #d4a64e;
+  margin-top: 2px;
+}
+.profile-header .profile-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  color: #ccc;
+}
+.profile-badge .badge-icon { font-size: 1rem; }
+
+.profile-section {
+  margin-bottom: 24px;
+}
+.profile-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #d4a64e;
+  padding-bottom: 6px;
+  border-bottom: 2px solid rgba(212,166,78,0.3);
+  margin-bottom: 14px;
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.profile-stat-box {
+  background: #16213e;
+  border-radius: 8px;
+  border: 1px solid #222;
+  padding: 14px 10px;
+  text-align: center;
+}
+.profile-stat-box .psb-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+}
+.profile-stat-box .psb-label {
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.profile-records-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.profile-record-card {
+  background: #16213e;
+  border-radius: 8px;
+  border: 1px solid #222;
+  padding: 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.profile-record-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+}
+.profile-record-card.rec-gold::before { background: #d4a64e; }
+.profile-record-card.rec-red::before { background: #f44336; }
+.profile-record-card.rec-blue::before { background: #4363d8; }
+.profile-record-card.rec-green::before { background: #4caf50; }
+.profile-record-card .rec-icon { font-size: 1.5rem; margin-bottom: 4px; }
+.profile-record-card .rec-title {
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.profile-record-card .rec-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: monospace;
+  margin: 4px 0;
+}
+.profile-record-card .rec-sub {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.profile-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 800px) {
+  .profile-two-col { grid-template-columns: 1fr; }
+}
+.profile-list-card {
+  background: #16213e;
+  border-radius: 8px;
+  border: 1px solid #222;
+  padding: 14px;
+}
+.profile-list-card h4 {
+  color: #d4a64e;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+.profile-list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.85rem;
+}
+.profile-list-row:last-child { border-bottom: none; }
+.profile-list-name { flex: 1; color: #ccc; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-list-games { color: #888; font-size: 0.75rem; font-family: monospace; min-width: 50px; text-align: right; }
+.profile-list-bar {
+  width: 80px;
+  height: 16px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.profile-list-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.profile-party-bars {
+  background: #16213e;
+  border-radius: 8px;
+  border: 1px solid #222;
+  padding: 14px;
+}
+.profile-party-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+.profile-party-label {
+  width: 80px;
+  color: #aaa;
+  text-align: right;
+  flex-shrink: 0;
+}
+.profile-party-track {
+  flex: 1;
+  height: 22px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.profile-party-fill {
+  height: 100%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  transition: width 0.4s;
+}
+.profile-party-games {
+  color: #888;
+  font-size: 0.72rem;
+  font-family: monospace;
+  min-width: 50px;
+}
+
+.time-heatmap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+.time-heatmap table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+.time-heatmap th {
+  padding: 4px 2px;
+  font-size: 0.65rem;
+  color: #888;
+  font-weight: 600;
+  min-width: 32px;
+  text-align: center;
+}
+.time-heatmap th.th-day {
+  text-align: right;
+  padding-right: 8px;
+  color: #ccc;
+  min-width: 50px;
+}
+.time-heatmap td {
+  width: 32px;
+  height: 26px;
+  text-align: center;
+  font-size: 0.6rem;
+  font-family: monospace;
+  font-weight: 700;
+  border: 1px solid rgba(0,0,0,0.4);
+  cursor: default;
+  transition: transform 0.1s;
+  color: rgba(255,255,255,0.8);
+}
+.time-heatmap td:hover {
+  outline: 2px solid #d4a64e;
+  z-index: 1;
+}
+.time-heatmap-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.time-badge {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+}
+.time-badge .tb-label { color: #888; font-size: 0.68rem; text-transform: uppercase; }
+.time-badge .tb-value { color: #d4a64e; font-weight: 700; }
+
+.profile-radar-container {
+  background: #16213e;
+  border-radius: 8px;
+  border: 1px solid #222;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.profile-radar-container svg text {
+  font-family: system-ui, sans-serif;
+}
+
+.profile-words {
+  min-height: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  padding: 20px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+.profile-word {
+  display: inline-block;
+  transition: transform 0.2s;
+  cursor: default;
+  line-height: 1.2;
+}
+.profile-word:hover { transform: scale(1.15); }
+
 @media (max-width: 1200px) {
   .player-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   .duo-section { grid-template-columns: 1fr; }
@@ -630,6 +945,7 @@ svg text { font-family: system-ui, sans-serif; }
     <button class="tab-btn" data-tab="time">Time Analysis</button>
     <button class="tab-btn" data-tab="h2h">Head to Head</button>
     <button class="tab-btn" data-tab="wordcloud">Word Cloud</button>
+    <button class="tab-btn" data-tab="profile">Player Profile</button>
   </nav>
 </div>
 
@@ -735,6 +1051,16 @@ svg text { font-family: system-ui, sans-serif; }
     <div class="filter-row" id="wcSelector"></div>
     <div class="wordcloud-area" id="wcArea"></div>
   </div>
+
+  <!-- PLAYER PROFILE -->
+  <div class="tab-content" id="tab-profile">
+    <h2 class="section-title">Player Profile</h2>
+    <div class="filter-row" style="margin-bottom:20px">
+      <label style="color:#aaa">Select Player:</label>
+      <select class="filter-select" id="profilePlayer"></select>
+    </div>
+    <div id="profileContent"></div>
+  </div>
 </div>
 
 <script>
@@ -835,6 +1161,7 @@ document.getElementById('tierSelector').addEventListener('click', e => {
   renderOverview();
   renderAwards();
   renderTimeAnalysis();
+  renderPlayerProfile();
 });
 
 // ===== 1. OVERVIEW =====
@@ -1363,6 +1690,321 @@ function renderWordCloud() {
   }).join('');
 }
 
+// ===== 10. PLAYER PROFILE =====
+function renderProfileSelector() {
+  const sel = document.getElementById('profilePlayer');
+  if (!DATA.player_profiles_detailed) return;
+  const names = Object.keys(DATA.player_profiles_detailed);
+  sel.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+  sel.addEventListener('change', renderPlayerProfile);
+}
+
+function renderPlayerProfile() {
+  const sel = document.getElementById('profilePlayer');
+  if (!sel || !sel.value) return;
+  const name = sel.value;
+  const profile = DATA.player_profiles_detailed[name];
+  if (!profile) return;
+  const card = DATA.player_cards.find(c => c.name === name);
+  const fun = profile.fun;
+  const comp = profile.competitive;
+  const container = document.getElementById('profileContent');
+
+  let html = '';
+
+  // --- 1. Profile Header ---
+  const avatar = card ? card.avatar : '';
+  const medal = card ? medalName(card.rank_tier) : 'Unknown';
+  const sigHero = fun.signature_hero;
+  const cz = fun.comfort_zone;
+  html += `<div class="profile-header">`;
+  if (avatar) html += `<img class="profile-avatar" src="${avatar}" alt="${name}">`;
+  html += `<div class="profile-info">
+    <div class="profile-name">${name}</div>
+    <div class="profile-medal">${medal}</div>
+    <div class="profile-badges">`;
+  if (sigHero && sigHero.hero_name) {
+    html += `<span class="profile-badge"><span class="badge-icon">&#9733;</span> ${sigHero.hero_name} (${sigHero.games}g, ${pct(sigHero.win_rate)})</span>`;
+  }
+  if (cz && cz.top_role) {
+    html += `<span class="profile-badge"><span class="badge-icon">&#9881;</span> ${cz.top_role} ${cz.top_role_pct}%</span>`;
+  }
+  const diversity = fun.hero_diversity;
+  if (diversity) {
+    html += `<span class="profile-badge"><span class="badge-icon">&#127922;</span> ${diversity.unique_heroes} heroes played</span>`;
+  }
+  html += `</div></div></div>`;
+
+  // --- 2. Overview Stats Bar ---
+  const overview = comp.overview[currentTier] || comp.overview['all'];
+  const wrCol = wrColor(overview.win_rate);
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Overview Stats</div>
+    <div class="profile-stats-grid">
+      <div class="profile-stat-box"><div class="psb-value" style="color:#e0e0e0">${overview.games}</div><div class="psb-label">Games</div></div>
+      <div class="profile-stat-box"><div class="psb-value" style="color:${wrCol}">${pct(overview.win_rate)}</div><div class="psb-label">Win Rate</div></div>
+      <div class="profile-stat-box"><div class="psb-value" style="color:#4caf50">${dec(overview.avg_kills,1)}</div><div class="psb-label">Avg Kills</div></div>
+      <div class="profile-stat-box"><div class="psb-value" style="color:#f44336">${dec(overview.avg_deaths,1)}</div><div class="psb-label">Avg Deaths</div></div>
+      <div class="profile-stat-box"><div class="psb-value" style="color:#4363d8">${dec(overview.avg_assists,1)}</div><div class="psb-label">Avg Assists</div></div>
+      <div class="profile-stat-box"><div class="psb-value" style="color:#d4a64e">${dec(overview.kda_ratio,2)}</div><div class="psb-label">KDA Ratio</div></div>
+    </div>
+  </div>`;
+
+  // --- 3. Personal Records ---
+  const rec = fun.records;
+  function fmtDuration(secs) {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Personal Records</div>
+    <div class="profile-records-grid">
+      <div class="profile-record-card rec-gold">
+        <div class="rec-icon">&#9876;</div>
+        <div class="rec-title">Most Kills</div>
+        <div class="rec-value" style="color:#d4a64e">${rec.max_kills.value}</div>
+        <div class="rec-sub">${rec.max_kills.hero_name}</div>
+      </div>
+      <div class="profile-record-card rec-red">
+        <div class="rec-icon">&#9760;</div>
+        <div class="rec-title">Most Deaths</div>
+        <div class="rec-value" style="color:#f44336">${rec.max_deaths.value}</div>
+        <div class="rec-sub">${rec.max_deaths.hero_name}</div>
+      </div>
+      <div class="profile-record-card rec-blue">
+        <div class="rec-icon">&#9996;</div>
+        <div class="rec-title">Most Assists</div>
+        <div class="rec-value" style="color:#4363d8">${rec.max_assists.value}</div>
+        <div class="rec-sub">${rec.max_assists.hero_name}</div>
+      </div>
+      <div class="profile-record-card rec-green">
+        <div class="rec-icon">&#128293;</div>
+        <div class="rec-title">Win Streak</div>
+        <div class="rec-value" style="color:#4caf50">${rec.longest_win_streak}</div>
+        <div class="rec-sub">consecutive wins</div>
+      </div>
+      <div class="profile-record-card rec-red">
+        <div class="rec-icon">&#128546;</div>
+        <div class="rec-title">Loss Streak</div>
+        <div class="rec-value" style="color:#f44336">${rec.longest_loss_streak}</div>
+        <div class="rec-sub">consecutive losses</div>
+      </div>
+      <div class="profile-record-card rec-gold">
+        <div class="rec-icon">&#9200;</div>
+        <div class="rec-title">Longest Game</div>
+        <div class="rec-value" style="color:#d4a64e">${fmtDuration(rec.longest_game.duration)}</div>
+        <div class="rec-sub">${rec.longest_game.won ? 'Won' : 'Lost'}</div>
+      </div>
+      <div class="profile-record-card rec-blue">
+        <div class="rec-icon">&#9889;</div>
+        <div class="rec-title">Shortest Game</div>
+        <div class="rec-value" style="color:#4363d8">${fmtDuration(rec.shortest_game.duration)}</div>
+        <div class="rec-sub">${rec.shortest_game.won ? 'Won' : 'Lost'}</div>
+      </div>
+    </div>
+  </div>`;
+
+  // --- 4. Best/Worst Heroes ---
+  const bestHeroes = (comp.best_heroes[currentTier] || comp.best_heroes['all']).slice(0, 5);
+  const worstHeroes = (comp.worst_heroes[currentTier] || comp.worst_heroes['all']).slice(0, 5);
+  function heroListHTML(heroes, colorGood) {
+    return heroes.map(h => {
+      const wr = h.win_rate;
+      const barW = Math.round(wr * 100);
+      const color = colorGood ? wrColor(wr) : wrColor(wr);
+      return `<div class="profile-list-row">
+        <span class="profile-list-name">${h.hero_name}</span>
+        <span class="profile-list-games">${h.games}g</span>
+        <div class="profile-list-bar"><div class="profile-list-bar-fill" style="width:${barW}%;background:${color}">${pct(wr)}</div></div>
+      </div>`;
+    }).join('');
+  }
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Heroes</div>
+    <div class="profile-two-col">
+      <div class="profile-list-card">
+        <h4 style="color:#4caf50">Best Heroes</h4>
+        ${heroListHTML(bestHeroes, true)}
+      </div>
+      <div class="profile-list-card">
+        <h4 style="color:#f44336">Worst Heroes</h4>
+        ${heroListHTML(worstHeroes, false)}
+      </div>
+    </div>
+  </div>`;
+
+  // --- 5. Best/Worst Teammates ---
+  const bestMates = (comp.best_teammates || []).slice(0, 5);
+  const worstMates = (comp.worst_teammates || []).slice(0, 5);
+  function mateListHTML(mates) {
+    return mates.map(m => {
+      const wr = m.win_rate;
+      const barW = Math.round(wr * 100);
+      return `<div class="profile-list-row">
+        <span class="profile-list-name">${m.peer_name}</span>
+        <span class="profile-list-games">${m.games}g</span>
+        <div class="profile-list-bar"><div class="profile-list-bar-fill" style="width:${barW}%;background:${wrColor(wr)}">${pct(wr)}</div></div>
+      </div>`;
+    }).join('');
+  }
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Teammates</div>
+    <div class="profile-two-col">
+      <div class="profile-list-card">
+        <h4 style="color:#4caf50">Best Teammates</h4>
+        ${mateListHTML(bestMates)}
+      </div>
+      <div class="profile-list-card">
+        <h4 style="color:#f44336">Worst Teammates</h4>
+        ${mateListHTML(worstMates)}
+      </div>
+    </div>
+  </div>`;
+
+  // --- 6. Party Size Performance ---
+  const partyData = (comp.party_size_performance[currentTier] || comp.party_size_performance['all']);
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Party Size Performance</div>
+    <div class="profile-party-bars">`;
+  partyData.forEach(ps => {
+    const barW = Math.round(ps.win_rate * 100);
+    html += `<div class="profile-party-row">
+      <span class="profile-party-label">${ps.party_size === 1 ? 'Solo' : ps.party_size + '-stack'}</span>
+      <div class="profile-party-track"><div class="profile-party-fill" style="width:${barW}%;background:${wrColor(ps.win_rate)}">${pct(ps.win_rate)}</div></div>
+      <span class="profile-party-games">${ps.games}g</span>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  // --- 7. Play Time Heatmap ---
+  const pt = fun.play_times[currentTier] || fun.play_times['all'];
+  html += `<div class="profile-section">
+    <div class="profile-section-title">Play Time Heatmap</div>
+    <div class="time-heatmap"><table><thead><tr><th class="th-day"></th>`;
+  for (let h = 0; h < 24; h++) html += `<th>${h}</th>`;
+  html += `</tr></thead><tbody>`;
+  // find max games for opacity scaling
+  let maxGames = 0;
+  pt.heatmap.forEach(day => day.hours.forEach(hr => { if (hr.games > maxGames) maxGames = hr.games; }));
+  pt.heatmap.forEach(day => {
+    html += `<tr><th class="th-day">${day.day.substring(0,3)}</th>`;
+    day.hours.forEach(hr => {
+      if (hr.games === 0) {
+        html += `<td style="background:#1a1a2e;color:#333">-</td>`;
+      } else {
+        const opacity = 0.25 + 0.75 * (hr.games / maxGames);
+        const bg = heatColor(hr.win_rate);
+        html += `<td style="background:${bg};opacity:${opacity.toFixed(2)}" title="${day.day} ${hr.hour}:00 - ${hr.games}g, ${pct(hr.win_rate)} WR">${hr.games}</td>`;
+      }
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table></div>`;
+  // badges
+  html += `<div class="time-heatmap-badges">`;
+  if (pt.best_hour) html += `<div class="time-badge"><div class="tb-label">Best Hour</div><div class="tb-value">${pt.best_hour.hour}:00 (${pct(pt.best_hour.win_rate)}, ${pt.best_hour.games}g)</div></div>`;
+  if (pt.worst_hour) html += `<div class="time-badge"><div class="tb-label">Worst Hour</div><div class="tb-value">${pt.worst_hour.hour}:00 (${pct(pt.worst_hour.win_rate)}, ${pt.worst_hour.games}g)</div></div>`;
+  if (pt.best_day) html += `<div class="time-badge"><div class="tb-label">Best Day</div><div class="tb-value">${pt.best_day.day} (${pct(pt.best_day.win_rate)}, ${pt.best_day.games}g)</div></div>`;
+  if (pt.worst_day) html += `<div class="time-badge"><div class="tb-label">Worst Day</div><div class="tb-value">${pt.worst_day.day} (${pct(pt.worst_day.win_rate)}, ${pt.worst_day.games}g)</div></div>`;
+  html += `</div></div>`;
+
+  // --- 8. Radar Chart (vs Group Average) ---
+  const vsAvg = comp.vs_group_avg;
+  if (vsAvg) {
+    const axes = [
+      { key: 'kills', label: 'Kills', invert: false },
+      { key: 'deaths', label: 'Deaths', invert: true },
+      { key: 'assists', label: 'Assists', invert: false },
+      { key: 'gold_per_min', label: 'GPM', invert: false },
+      { key: 'xp_per_min', label: 'XPM', invert: false },
+      { key: 'hero_damage', label: 'Hero Dmg', invert: false },
+      { key: 'tower_damage', label: 'Tower Dmg', invert: false },
+      { key: 'last_hits', label: 'Last Hits', invert: false }
+    ];
+    const n = axes.length;
+    const cx = 200, cy = 200, R = 150;
+    // normalize values
+    const playerNorm = [];
+    const groupNorm = [];
+    axes.forEach(ax => {
+      const d = vsAvg[ax.key];
+      if (!d) { playerNorm.push(0.5); groupNorm.push(0.5); return; }
+      let pv = d.player, gv = d.group_avg;
+      if (ax.invert) { pv = 1 / (pv || 1); gv = 1 / (gv || 1); }
+      const maxV = Math.max(pv, gv, 0.001);
+      playerNorm.push(pv / maxV);
+      groupNorm.push(gv / maxV);
+    });
+    function polyPoints(vals) {
+      return vals.map((v, i) => {
+        const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+        const r = v * R;
+        return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
+      }).join(' ');
+    }
+    let svg = `<svg width="400" height="420" viewBox="0 0 400 420">`;
+    // grid circles
+    for (let ring = 1; ring <= 4; ring++) {
+      const r = R * ring / 4;
+      svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#333" stroke-width="0.5"/>`;
+    }
+    // axis lines + labels
+    axes.forEach((ax, i) => {
+      const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+      const x2 = cx + R * Math.cos(angle);
+      const y2 = cy + R * Math.sin(angle);
+      svg += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#444" stroke-width="0.5"/>`;
+      const lx = cx + (R + 20) * Math.cos(angle);
+      const ly = cy + (R + 20) * Math.sin(angle);
+      let anchor = 'middle';
+      if (lx < cx - 10) anchor = 'end';
+      else if (lx > cx + 10) anchor = 'start';
+      svg += `<text x="${lx}" y="${ly}" fill="#aaa" font-size="11" text-anchor="${anchor}" dominant-baseline="central">${ax.label}</text>`;
+    });
+    // group polygon
+    svg += `<polygon points="${polyPoints(groupNorm)}" fill="rgba(212,166,78,0.15)" stroke="#d4a64e" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    // player polygon
+    const playerColor = PLAYER_COLORS[DATA.player_cards.findIndex(c => c.name === name) % PLAYER_COLORS.length] || '#42d4f4';
+    svg += `<polygon points="${polyPoints(playerNorm)}" fill="${playerColor}33" stroke="${playerColor}" stroke-width="2"/>`;
+    // dots
+    playerNorm.forEach((v, i) => {
+      const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+      const r = v * R;
+      svg += `<circle cx="${cx + r * Math.cos(angle)}" cy="${cy + r * Math.sin(angle)}" r="3.5" fill="${playerColor}" stroke="#fff" stroke-width="1"/>`;
+    });
+    // legend
+    svg += `<rect x="10" y="390" width="14" height="14" rx="2" fill="${playerColor}55" stroke="${playerColor}"/>`;
+    svg += `<text x="30" y="401" fill="#ccc" font-size="11">${name}</text>`;
+    svg += `<rect x="140" y="390" width="14" height="14" rx="2" fill="rgba(212,166,78,0.2)" stroke="#d4a64e" stroke-dasharray="3,2"/>`;
+    svg += `<text x="160" y="401" fill="#ccc" font-size="11">Group Average</text>`;
+    svg += `</svg>`;
+    html += `<div class="profile-section">
+      <div class="profile-section-title">vs Group Average</div>
+      <div class="profile-radar-container">${svg}</div>
+    </div>`;
+  }
+
+  // --- 9. Chat Personality ---
+  const chat = fun.chat_personality;
+  if (chat && chat.length > 0) {
+    const maxCount = chat[0].count;
+    const wordColors = ['#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#42d4f4','#f032e6','#bfef45','#fabed4','#d4a64e','#469990','#e88','#aaffc3','#ffd8b1'];
+    html += `<div class="profile-section">
+      <div class="profile-section-title">Chat Personality</div>
+      <div class="profile-words">`;
+    chat.slice(0, 30).forEach((w, i) => {
+      const size = 0.7 + 2.0 * (w.count / maxCount);
+      const color = wordColors[i % wordColors.length];
+      const rot = (Math.random() * 10 - 5).toFixed(0);
+      html += `<span class="profile-word" style="font-size:${size.toFixed(2)}rem;color:${color};transform:rotate(${rot}deg)" title="${w.word}: ${w.count} times">${w.word}</span>`;
+    });
+    html += `</div></div>`;
+  }
+
+  container.innerHTML = html;
+}
+
 // ===== INIT =====
 renderOverview();
 renderAwards();
@@ -1376,6 +2018,8 @@ renderH2HSelectors();
 renderH2H();
 renderWCSelector();
 renderWordCloud();
+renderProfileSelector();
+renderPlayerProfile();
 </script>
 </body>
 </html>'''
