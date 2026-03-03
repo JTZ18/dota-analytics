@@ -1,0 +1,933 @@
+{
+  "win_predictor": {
+    "metrics": {
+      "accuracy": 0.5789,
+      "std": 0.0611,
+      "n_samples": 8254,
+      "n_features": 15,
+      "cv_folds": 10,
+      "win_rate_baseline": 0.5165
+    },
+    "feature_importances": {
+      "avg_player_hero_wr": 0.6075,
+      "avg_friend_wr": 0.1175,
+      "hour": 0.0851,
+      "num_friends": 0.0421,
+      "has_Breaze": 0.0332,
+      "has_Freecss": 0.022,
+      "has_Kob": 0.0158,
+      "has_bread": 0.0146,
+      "has_Imi bne": 0.0138,
+      "has_cremfresh": 0.0116,
+      "has_Saic": 0.0114,
+      "has_harry ron": 0.01,
+      "has_rabbs": 0.0057,
+      "has_Maegix": 0.0057,
+      "has_Bartolomeo": 0.004
+    }
+  },
+  "hero_recommendations": {
+    "Bartolomeo": [
+      {
+        "hero_name": "Zeus",
+        "hero_id": 22,
+        "games": 20,
+        "wins": 17,
+        "win_rate": 0.85,
+        "score": 2.5878
+      },
+      {
+        "hero_name": "Treant Protector",
+        "hero_id": 83,
+        "games": 48,
+        "wins": 31,
+        "win_rate": 0.6458,
+        "score": 2.5133
+      },
+      {
+        "hero_name": "Tidehunter",
+        "hero_id": 29,
+        "games": 34,
+        "wins": 21,
+        "win_rate": 0.6176,
+        "score": 2.1958
+      },
+      {
+        "hero_name": "Luna",
+        "hero_id": 48,
+        "games": 41,
+        "wins": 21,
+        "win_rate": 0.5122,
+        "score": 1.9144
+      },
+      {
+        "hero_name": "Tiny",
+        "hero_id": 19,
+        "games": 15,
+        "wins": 10,
+        "win_rate": 0.6667,
+        "score": 1.8485
+      },
+      {
+        "hero_name": "Lion",
+        "hero_id": 26,
+        "games": 50,
+        "wins": 23,
+        "win_rate": 0.46,
+        "score": 1.8086
+      },
+      {
+        "hero_name": "Io",
+        "hero_id": 91,
+        "games": 28,
+        "wins": 15,
+        "win_rate": 0.5357,
+        "score": 1.8039
+      },
+      {
+        "hero_name": "Slardar",
+        "hero_id": 28,
+        "games": 21,
+        "wins": 12,
+        "win_rate": 0.5714,
+        "score": 1.7662
+      },
+      {
+        "hero_name": "Spectre",
+        "hero_id": 67,
+        "games": 19,
+        "wins": 11,
+        "win_rate": 0.5789,
+        "score": 1.7342
+      },
+      {
+        "hero_name": "Viper",
+        "hero_id": 47,
+        "games": 12,
+        "wins": 8,
+        "win_rate": 0.6667,
+        "score": 1.7101
+      }
+    ],
+    "Breaze": [
+      {
+        "hero_name": "Crystal Maiden",
+        "hero_id": 5,
+        "games": 487,
+        "wins": 281,
+        "win_rate": 0.577,
+        "score": 3.5718
+      },
+      {
+        "hero_name": "Techies",
+        "hero_id": 105,
+        "games": 447,
+        "wins": 249,
+        "win_rate": 0.557,
+        "score": 3.4004
+      },
+      {
+        "hero_name": "Omniknight",
+        "hero_id": 57,
+        "games": 154,
+        "wins": 94,
+        "win_rate": 0.6104,
+        "score": 3.0785
+      },
+      {
+        "hero_name": "Phoenix",
+        "hero_id": 110,
+        "games": 184,
+        "wins": 107,
+        "win_rate": 0.5815,
+        "score": 3.0356
+      },
+      {
+        "hero_name": "Pudge",
+        "hero_id": 14,
+        "games": 424,
+        "wins": 207,
+        "win_rate": 0.4882,
+        "score": 2.9546
+      },
+      {
+        "hero_name": "Dark Willow",
+        "hero_id": 119,
+        "games": 135,
+        "wins": 80,
+        "win_rate": 0.5926,
+        "score": 2.9112
+      },
+      {
+        "hero_name": "Grimstroke",
+        "hero_id": 121,
+        "games": 200,
+        "wins": 107,
+        "win_rate": 0.535,
+        "score": 2.8373
+      },
+      {
+        "hero_name": "Vengeful Spirit",
+        "hero_id": 20,
+        "games": 87,
+        "wins": 55,
+        "win_rate": 0.6322,
+        "score": 2.8306
+      },
+      {
+        "hero_name": "Snapfire",
+        "hero_id": 128,
+        "games": 53,
+        "wins": 36,
+        "win_rate": 0.6792,
+        "score": 2.7093
+      },
+      {
+        "hero_name": "Mirana",
+        "hero_id": 9,
+        "games": 126,
+        "wins": 70,
+        "win_rate": 0.5556,
+        "score": 2.6914
+      }
+    ],
+    "Freecss": [
+      {
+        "hero_name": "Void Spirit",
+        "hero_id": 126,
+        "games": 285,
+        "wins": 171,
+        "win_rate": 0.6,
+        "score": 3.3936
+      },
+      {
+        "hero_name": "Lifestealer",
+        "hero_id": 54,
+        "games": 116,
+        "wins": 77,
+        "win_rate": 0.6638,
+        "score": 3.1611
+      },
+      {
+        "hero_name": "Sniper",
+        "hero_id": 35,
+        "games": 213,
+        "wins": 125,
+        "win_rate": 0.5869,
+        "score": 3.1493
+      },
+      {
+        "hero_name": "Monkey King",
+        "hero_id": 114,
+        "games": 243,
+        "wins": 137,
+        "win_rate": 0.5638,
+        "score": 3.0993
+      },
+      {
+        "hero_name": "Wraith King",
+        "hero_id": 42,
+        "games": 89,
+        "wins": 61,
+        "win_rate": 0.6854,
+        "score": 3.0842
+      },
+      {
+        "hero_name": "Juggernaut",
+        "hero_id": 8,
+        "games": 224,
+        "wins": 124,
+        "win_rate": 0.5536,
+        "score": 2.9984
+      },
+      {
+        "hero_name": "Anti-Mage",
+        "hero_id": 1,
+        "games": 125,
+        "wins": 77,
+        "win_rate": 0.616,
+        "score": 2.9791
+      },
+      {
+        "hero_name": "Drow Ranger",
+        "hero_id": 6,
+        "games": 69,
+        "wins": 48,
+        "win_rate": 0.6957,
+        "score": 2.9557
+      },
+      {
+        "hero_name": "Riki",
+        "hero_id": 32,
+        "games": 125,
+        "wins": 71,
+        "win_rate": 0.568,
+        "score": 2.747
+      },
+      {
+        "hero_name": "Hoodwink",
+        "hero_id": 123,
+        "games": 57,
+        "wins": 38,
+        "win_rate": 0.6667,
+        "score": 2.7071
+      }
+    ],
+    "Imi bne": [
+      {
+        "hero_name": "Omniknight",
+        "hero_id": 57,
+        "games": 27,
+        "wins": 21,
+        "win_rate": 0.7778,
+        "score": 2.5918
+      },
+      {
+        "hero_name": "Ogre Magi",
+        "hero_id": 84,
+        "games": 103,
+        "wins": 57,
+        "win_rate": 0.5534,
+        "score": 2.5702
+      },
+      {
+        "hero_name": "Witch Doctor",
+        "hero_id": 30,
+        "games": 71,
+        "wins": 42,
+        "win_rate": 0.5915,
+        "score": 2.5296
+      },
+      {
+        "hero_name": "Tidehunter",
+        "hero_id": 29,
+        "games": 40,
+        "wins": 27,
+        "win_rate": 0.675,
+        "score": 2.5067
+      },
+      {
+        "hero_name": "Mirana",
+        "hero_id": 9,
+        "games": 59,
+        "wins": 36,
+        "win_rate": 0.6102,
+        "score": 2.4984
+      },
+      {
+        "hero_name": "Dazzle",
+        "hero_id": 50,
+        "games": 34,
+        "wins": 23,
+        "win_rate": 0.6765,
+        "score": 2.4052
+      },
+      {
+        "hero_name": "Necrophos",
+        "hero_id": 36,
+        "games": 40,
+        "wins": 25,
+        "win_rate": 0.625,
+        "score": 2.321
+      },
+      {
+        "hero_name": "Venomancer",
+        "hero_id": 40,
+        "games": 34,
+        "wins": 22,
+        "win_rate": 0.6471,
+        "score": 2.3007
+      },
+      {
+        "hero_name": "Sniper",
+        "hero_id": 35,
+        "games": 26,
+        "wins": 18,
+        "win_rate": 0.6923,
+        "score": 2.2817
+      },
+      {
+        "hero_name": "Earthshaker",
+        "hero_id": 7,
+        "games": 46,
+        "wins": 26,
+        "win_rate": 0.5652,
+        "score": 2.1761
+      }
+    ],
+    "Kob": [
+      {
+        "hero_name": "Phantom Assassin",
+        "hero_id": 44,
+        "games": 14,
+        "wins": 12,
+        "win_rate": 0.8571,
+        "score": 2.3211
+      },
+      {
+        "hero_name": "Anti-Mage",
+        "hero_id": 1,
+        "games": 8,
+        "wins": 7,
+        "win_rate": 0.875,
+        "score": 1.9226
+      },
+      {
+        "hero_name": "Windranger",
+        "hero_id": 21,
+        "games": 20,
+        "wins": 12,
+        "win_rate": 0.6,
+        "score": 1.8267
+      },
+      {
+        "hero_name": "Wraith King",
+        "hero_id": 42,
+        "games": 11,
+        "wins": 8,
+        "win_rate": 0.7273,
+        "score": 1.8073
+      },
+      {
+        "hero_name": "Kunkka",
+        "hero_id": 23,
+        "games": 14,
+        "wins": 9,
+        "win_rate": 0.6429,
+        "score": 1.741
+      },
+      {
+        "hero_name": "Axe",
+        "hero_id": 2,
+        "games": 17,
+        "wins": 10,
+        "win_rate": 0.5882,
+        "score": 1.7001
+      },
+      {
+        "hero_name": "Slark",
+        "hero_id": 93,
+        "games": 10,
+        "wins": 7,
+        "win_rate": 0.7,
+        "score": 1.6785
+      },
+      {
+        "hero_name": "Medusa",
+        "hero_id": 94,
+        "games": 15,
+        "wins": 9,
+        "win_rate": 0.6,
+        "score": 1.6636
+      },
+      {
+        "hero_name": "Lina",
+        "hero_id": 25,
+        "games": 8,
+        "wins": 6,
+        "win_rate": 0.75,
+        "score": 1.6479
+      },
+      {
+        "hero_name": "Juggernaut",
+        "hero_id": 8,
+        "games": 13,
+        "wins": 8,
+        "win_rate": 0.6154,
+        "score": 1.6241
+      }
+    ],
+    "Maegix": [
+      {
+        "hero_name": "Jakiro",
+        "hero_id": 64,
+        "games": 130,
+        "wins": 72,
+        "win_rate": 0.5538,
+        "score": 2.6999
+      },
+      {
+        "hero_name": "Silencer",
+        "hero_id": 75,
+        "games": 66,
+        "wins": 42,
+        "win_rate": 0.6364,
+        "score": 2.6759
+      },
+      {
+        "hero_name": "Luna",
+        "hero_id": 48,
+        "games": 63,
+        "wins": 40,
+        "win_rate": 0.6349,
+        "score": 2.6405
+      },
+      {
+        "hero_name": "Bane",
+        "hero_id": 3,
+        "games": 57,
+        "wins": 36,
+        "win_rate": 0.6316,
+        "score": 2.5646
+      },
+      {
+        "hero_name": "Earthshaker",
+        "hero_id": 7,
+        "games": 72,
+        "wins": 41,
+        "win_rate": 0.5694,
+        "score": 2.443
+      },
+      {
+        "hero_name": "Zeus",
+        "hero_id": 22,
+        "games": 46,
+        "wins": 29,
+        "win_rate": 0.6304,
+        "score": 2.4271
+      },
+      {
+        "hero_name": "Medusa",
+        "hero_id": 94,
+        "games": 75,
+        "wins": 42,
+        "win_rate": 0.56,
+        "score": 2.4252
+      },
+      {
+        "hero_name": "Mars",
+        "hero_id": 129,
+        "games": 20,
+        "wins": 15,
+        "win_rate": 0.75,
+        "score": 2.2834
+      },
+      {
+        "hero_name": "Crystal Maiden",
+        "hero_id": 5,
+        "games": 41,
+        "wins": 25,
+        "win_rate": 0.6098,
+        "score": 2.2792
+      },
+      {
+        "hero_name": "Witch Doctor",
+        "hero_id": 30,
+        "games": 65,
+        "wins": 35,
+        "win_rate": 0.5385,
+        "score": 2.2561
+      }
+    ],
+    "Saic": [
+      {
+        "hero_name": "Abaddon",
+        "hero_id": 102,
+        "games": 68,
+        "wins": 50,
+        "win_rate": 0.7353,
+        "score": 3.1133
+      },
+      {
+        "hero_name": "Vengeful Spirit",
+        "hero_id": 20,
+        "games": 91,
+        "wins": 60,
+        "win_rate": 0.6593,
+        "score": 2.9812
+      },
+      {
+        "hero_name": "Spectre",
+        "hero_id": 67,
+        "games": 104,
+        "wins": 66,
+        "win_rate": 0.6346,
+        "score": 2.9534
+      },
+      {
+        "hero_name": "Phantom Assassin",
+        "hero_id": 44,
+        "games": 180,
+        "wins": 100,
+        "win_rate": 0.5556,
+        "score": 2.8883
+      },
+      {
+        "hero_name": "Drow Ranger",
+        "hero_id": 6,
+        "games": 90,
+        "wins": 52,
+        "win_rate": 0.5778,
+        "score": 2.6064
+      },
+      {
+        "hero_name": "Phantom Lancer",
+        "hero_id": 12,
+        "games": 88,
+        "wins": 51,
+        "win_rate": 0.5795,
+        "score": 2.6012
+      },
+      {
+        "hero_name": "Silencer",
+        "hero_id": 75,
+        "games": 52,
+        "wins": 33,
+        "win_rate": 0.6346,
+        "score": 2.5195
+      },
+      {
+        "hero_name": "Windranger",
+        "hero_id": 21,
+        "games": 88,
+        "wins": 49,
+        "win_rate": 0.5568,
+        "score": 2.4993
+      },
+      {
+        "hero_name": "Zeus",
+        "hero_id": 22,
+        "games": 64,
+        "wins": 38,
+        "win_rate": 0.5938,
+        "score": 2.4788
+      },
+      {
+        "hero_name": "Juggernaut",
+        "hero_id": 8,
+        "games": 101,
+        "wins": 54,
+        "win_rate": 0.5347,
+        "score": 2.473
+      }
+    ],
+    "bread": [
+      {
+        "hero_name": "Necrophos",
+        "hero_id": 36,
+        "games": 117,
+        "wins": 72,
+        "win_rate": 0.6154,
+        "score": 2.9359
+      },
+      {
+        "hero_name": "Death Prophet",
+        "hero_id": 43,
+        "games": 131,
+        "wins": 74,
+        "win_rate": 0.5649,
+        "score": 2.7583
+      },
+      {
+        "hero_name": "Winter Wyvern",
+        "hero_id": 112,
+        "games": 71,
+        "wins": 44,
+        "win_rate": 0.6197,
+        "score": 2.6502
+      },
+      {
+        "hero_name": "Ancient Apparition",
+        "hero_id": 68,
+        "games": 36,
+        "wins": 26,
+        "win_rate": 0.7222,
+        "score": 2.6078
+      },
+      {
+        "hero_name": "Silencer",
+        "hero_id": 75,
+        "games": 84,
+        "wins": 49,
+        "win_rate": 0.5833,
+        "score": 2.5914
+      },
+      {
+        "hero_name": "Centaur Warrunner",
+        "hero_id": 96,
+        "games": 78,
+        "wins": 45,
+        "win_rate": 0.5769,
+        "score": 2.5207
+      },
+      {
+        "hero_name": "Underlord",
+        "hero_id": 108,
+        "games": 63,
+        "wins": 38,
+        "win_rate": 0.6032,
+        "score": 2.5086
+      },
+      {
+        "hero_name": "Axe",
+        "hero_id": 2,
+        "games": 47,
+        "wins": 29,
+        "win_rate": 0.617,
+        "score": 2.3885
+      },
+      {
+        "hero_name": "Timbersaw",
+        "hero_id": 98,
+        "games": 131,
+        "wins": 64,
+        "win_rate": 0.4885,
+        "score": 2.3852
+      },
+      {
+        "hero_name": "Abaddon",
+        "hero_id": 102,
+        "games": 63,
+        "wins": 36,
+        "win_rate": 0.5714,
+        "score": 2.3764
+      }
+    ],
+    "cremfresh": [
+      {
+        "hero_name": "Pangolier",
+        "hero_id": 120,
+        "games": 628,
+        "wins": 383,
+        "win_rate": 0.6099,
+        "score": 3.9303
+      },
+      {
+        "hero_name": "Pudge",
+        "hero_id": 14,
+        "games": 712,
+        "wins": 383,
+        "win_rate": 0.5379,
+        "score": 3.5337
+      },
+      {
+        "hero_name": "Outworld Destroyer",
+        "hero_id": 76,
+        "games": 154,
+        "wins": 93,
+        "win_rate": 0.6039,
+        "score": 3.0457
+      },
+      {
+        "hero_name": "Ursa",
+        "hero_id": 70,
+        "games": 163,
+        "wins": 93,
+        "win_rate": 0.5706,
+        "score": 2.91
+      },
+      {
+        "hero_name": "Slark",
+        "hero_id": 93,
+        "games": 144,
+        "wins": 82,
+        "win_rate": 0.5694,
+        "score": 2.8338
+      },
+      {
+        "hero_name": "Juggernaut",
+        "hero_id": 8,
+        "games": 174,
+        "wins": 95,
+        "win_rate": 0.546,
+        "score": 2.82
+      },
+      {
+        "hero_name": "Slardar",
+        "hero_id": 28,
+        "games": 114,
+        "wins": 67,
+        "win_rate": 0.5877,
+        "score": 2.7886
+      },
+      {
+        "hero_name": "Viper",
+        "hero_id": 47,
+        "games": 106,
+        "wins": 63,
+        "win_rate": 0.5943,
+        "score": 2.7771
+      },
+      {
+        "hero_name": "Tiny",
+        "hero_id": 19,
+        "games": 166,
+        "wins": 89,
+        "win_rate": 0.5361,
+        "score": 2.7438
+      },
+      {
+        "hero_name": "Sniper",
+        "hero_id": 35,
+        "games": 188,
+        "wins": 98,
+        "win_rate": 0.5213,
+        "score": 2.7325
+      }
+    ],
+    "harry ron": [
+      {
+        "hero_name": "Lich",
+        "hero_id": 31,
+        "games": 271,
+        "wins": 142,
+        "win_rate": 0.524,
+        "score": 2.9374
+      },
+      {
+        "hero_name": "Shadow Shaman",
+        "hero_id": 27,
+        "games": 79,
+        "wins": 40,
+        "win_rate": 0.5063,
+        "score": 2.2186
+      },
+      {
+        "hero_name": "Jakiro",
+        "hero_id": 64,
+        "games": 24,
+        "wins": 16,
+        "win_rate": 0.6667,
+        "score": 2.146
+      },
+      {
+        "hero_name": "Lion",
+        "hero_id": 26,
+        "games": 26,
+        "wins": 12,
+        "win_rate": 0.4615,
+        "score": 1.521
+      },
+      {
+        "hero_name": "Disruptor",
+        "hero_id": 87,
+        "games": 42,
+        "wins": 16,
+        "win_rate": 0.381,
+        "score": 1.433
+      },
+      {
+        "hero_name": "Phantom Lancer",
+        "hero_id": 12,
+        "games": 17,
+        "wins": 8,
+        "win_rate": 0.4706,
+        "score": 1.3602
+      },
+      {
+        "hero_name": "Witch Doctor",
+        "hero_id": 30,
+        "games": 38,
+        "wins": 14,
+        "win_rate": 0.3684,
+        "score": 1.3497
+      },
+      {
+        "hero_name": "Spirit Breaker",
+        "hero_id": 71,
+        "games": 10,
+        "wins": 5,
+        "win_rate": 0.5,
+        "score": 1.1989
+      },
+      {
+        "hero_name": "Ogre Magi",
+        "hero_id": 84,
+        "games": 8,
+        "wins": 4,
+        "win_rate": 0.5,
+        "score": 1.0986
+      },
+      {
+        "hero_name": "Drow Ranger",
+        "hero_id": 6,
+        "games": 5,
+        "wins": 3,
+        "win_rate": 0.6,
+        "score": 1.0751
+      }
+    ],
+    "rabbs": [
+      {
+        "hero_name": "Disruptor",
+        "hero_id": 87,
+        "games": 61,
+        "wins": 34,
+        "win_rate": 0.5574,
+        "score": 2.3005
+      },
+      {
+        "hero_name": "Shadow Shaman",
+        "hero_id": 27,
+        "games": 15,
+        "wins": 12,
+        "win_rate": 0.8,
+        "score": 2.2181
+      },
+      {
+        "hero_name": "Lich",
+        "hero_id": 31,
+        "games": 36,
+        "wins": 20,
+        "win_rate": 0.5556,
+        "score": 2.0062
+      },
+      {
+        "hero_name": "Skywrath Mage",
+        "hero_id": 101,
+        "games": 62,
+        "wins": 27,
+        "win_rate": 0.4355,
+        "score": 1.8043
+      },
+      {
+        "hero_name": "Luna",
+        "hero_id": 48,
+        "games": 9,
+        "wins": 7,
+        "win_rate": 0.7778,
+        "score": 1.791
+      },
+      {
+        "hero_name": "Crystal Maiden",
+        "hero_id": 5,
+        "games": 19,
+        "wins": 11,
+        "win_rate": 0.5789,
+        "score": 1.7342
+      },
+      {
+        "hero_name": "Ancient Apparition",
+        "hero_id": 68,
+        "games": 12,
+        "wins": 8,
+        "win_rate": 0.6667,
+        "score": 1.7101
+      },
+      {
+        "hero_name": "Vengeful Spirit",
+        "hero_id": 20,
+        "games": 25,
+        "wins": 11,
+        "win_rate": 0.44,
+        "score": 1.4336
+      },
+      {
+        "hero_name": "Winter Wyvern",
+        "hero_id": 112,
+        "games": 5,
+        "wins": 4,
+        "win_rate": 0.8,
+        "score": 1.4334
+      },
+      {
+        "hero_name": "Lion",
+        "hero_id": 26,
+        "games": 3,
+        "wins": 3,
+        "win_rate": 1.0,
+        "score": 1.3863
+      }
+    ]
+  }
+}
