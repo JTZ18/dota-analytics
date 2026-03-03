@@ -10,6 +10,7 @@ Usage:
 
 import ast
 import json
+import math
 import time
 from datetime import datetime, timezone
 
@@ -291,7 +292,7 @@ def compute_superlatives(data: dict) -> list:
                 "stat": "avg_deaths",
             })
 
-            # Late Night Warrior — highest % of games between hours 0-5 (UTC)
+            # Late Night Warrior — highest % of games between hours 0-5 (SGT)
             late_night = (
                 mh.groupby("player_name")
                 .apply(lambda g: (g["hour"].between(0, 5).sum()) / len(g) if len(g) > 0 else 0)
@@ -300,7 +301,7 @@ def compute_superlatives(data: dict) -> list:
             r = late_night.loc[late_night["late_pct"].idxmax()]
             sup_list.append({
                 "title": "Late Night Warrior",
-                "description": "Highest % of games played between midnight and 5 AM (UTC)",
+                "description": "Highest % of games played between midnight and 5 AM (SGT)",
                 "player": r["player_name"],
                 "value": round(float(r["late_pct"]) * 100, 1),
                 "stat": "late_night_pct",
@@ -769,6 +770,523 @@ def compute_wordcloud_insights(data: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# 10. Per-player detailed profiles — helpers
+# ---------------------------------------------------------------------------
+
+def _compute_records(player_matches, hero_names_lookup):
+    """Compute personal records from a player's match history."""
+    if len(player_matches) == 0:
+        return {}
+
+    # Max kills
+    idx_k = player_matches["kills"].idxmax()
+    rk = player_matches.loc[idx_k]
+    max_kills = {
+        "value": int(rk["kills"]),
+        "match_id": int(rk["match_id"]),
+        "hero_name": hero_names_lookup.get(int(rk["hero_id"]), "Unknown"),
+    }
+
+    # Max deaths
+    idx_d = player_matches["deaths"].idxmax()
+    rd = player_matches.loc[idx_d]
+    max_deaths = {
+        "value": int(rd["deaths"]),
+        "match_id": int(rd["match_id"]),
+        "hero_name": hero_names_lookup.get(int(rd["hero_id"]), "Unknown"),
+    }
+
+    # Max assists
+    idx_a = player_matches["assists"].idxmax()
+    ra = player_matches.loc[idx_a]
+    max_assists = {
+        "value": int(ra["assists"]),
+        "match_id": int(ra["match_id"]),
+        "hero_name": hero_names_lookup.get(int(ra["hero_id"]), "Unknown"),
+    }
+
+    # Win/loss streaks
+    sorted_m = player_matches.sort_values("start_time")
+    longest_win_streak = 0
+    longest_loss_streak = 0
+    cur_win = 0
+    cur_loss = 0
+    for w in sorted_m["won"]:
+        if w:
+            cur_win += 1
+            cur_loss = 0
+        else:
+            cur_loss += 1
+            cur_win = 0
+        longest_win_streak = max(longest_win_streak, cur_win)
+        longest_loss_streak = max(longest_loss_streak, cur_loss)
+
+    # Longest and shortest game
+    idx_long = player_matches["duration"].idxmax()
+    rl = player_matches.loc[idx_long]
+    longest_game = {
+        "duration": int(rl["duration"]),
+        "match_id": int(rl["match_id"]),
+        "won": bool(rl["won"]),
+    }
+
+    idx_short = player_matches["duration"].idxmin()
+    rs = player_matches.loc[idx_short]
+    shortest_game = {
+        "duration": int(rs["duration"]),
+        "match_id": int(rs["match_id"]),
+        "won": bool(rs["won"]),
+    }
+
+    return {
+        "max_kills": max_kills,
+        "max_deaths": max_deaths,
+        "max_assists": max_assists,
+        "longest_win_streak": longest_win_streak,
+        "longest_loss_streak": longest_loss_streak,
+        "longest_game": longest_game,
+        "shortest_game": shortest_game,
+    }
+
+
+def _compute_signature_hero(player_heroes):
+    """Find the player's signature hero using win_rate * log(games + 1) scoring."""
+    if len(player_heroes) == 0:
+        return {}
+
+    qualified = player_heroes[player_heroes["games"] >= 10].copy()
+    if len(qualified) == 0:
+        # Fallback to most games
+        qualified = player_heroes.copy()
+
+    qualified["score"] = qualified["win_rate"] * qualified["games"].apply(lambda g: math.log(g + 1))
+    best = qualified.loc[qualified["score"].idxmax()]
+    return {
+        "hero_name": best["hero_name"],
+        "games": int(best["games"]),
+        "wins": int(best["wins"]),
+        "win_rate": round(float(best["win_rate"]), 4),
+    }
+
+
+def _compute_hero_diversity(player_heroes, total_games):
+    """Compute hero diversity stats."""
+    unique_heroes = int((player_heroes["games"] > 0).sum())
+    diversity_score = round(unique_heroes / total_games, 4) if total_games > 0 else 0
+    return {
+        "unique_heroes": unique_heroes,
+        "total_games": total_games,
+        "diversity_score": diversity_score,
+    }
+
+
+def _compute_comfort_zone(player_heroes, heroes_df):
+    """Compute role distribution weighted by games played."""
+    heroes_ref = heroes_df.copy()
+    heroes_ref["roles_list"] = heroes_ref["roles"].apply(
+        lambda x: ast.literal_eval(x) if isinstance(x, str) else []
+    )
+
+    merged = player_heroes.merge(
+        heroes_ref[["id", "roles_list"]].rename(columns={"id": "hero_id"}),
+        on="hero_id",
+        how="left",
+    )
+
+    role_weights = {}
+    total_weighted = 0
+    for _, row in merged.iterrows():
+        games = int(row["games"])
+        roles = row["roles_list"] if isinstance(row["roles_list"], list) else []
+        for role in roles:
+            role_weights[role] = role_weights.get(role, 0) + games
+            total_weighted += games
+
+    if total_weighted == 0:
+        return {"top_role": None, "top_role_pct": 0, "roles": {}}
+
+    role_pcts = {
+        role: round(count / total_weighted * 100, 1)
+        for role, count in sorted(role_weights.items(), key=lambda x: -x[1])
+    }
+    top_role = max(role_weights, key=role_weights.get)
+    top_role_pct = role_pcts[top_role]
+
+    return {
+        "top_role": top_role,
+        "top_role_pct": top_role_pct,
+        "roles": role_pcts,
+    }
+
+
+def _compute_play_times(mh_tier):
+    """Build a 7x24 heatmap of games and win rate by day_of_week/hour."""
+    dow_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+    if len(mh_tier) == 0:
+        return {
+            "heatmap": [],
+            "best_hour": None,
+            "worst_hour": None,
+            "best_day": None,
+            "worst_day": None,
+        }
+
+    grouped = (
+        mh_tier.groupby(["day_of_week", "hour"])
+        .agg(games=("won", "size"), wins=("won", "sum"))
+        .reset_index()
+    )
+    grouped["win_rate"] = round(grouped["wins"] / grouped["games"], 4)
+
+    heatmap = []
+    for day in dow_order:
+        day_data = grouped[grouped["day_of_week"] == day].sort_values("hour")
+        hours = []
+        for _, r in day_data.iterrows():
+            hours.append({
+                "hour": int(r["hour"]),
+                "games": int(r["games"]),
+                "wins": int(r["wins"]),
+                "win_rate": float(r["win_rate"]),
+            })
+        heatmap.append({"day": day, "hours": hours})
+
+    # Best/worst hour (min 5 games)
+    hour_agg = (
+        mh_tier.groupby("hour")
+        .agg(games=("won", "size"), wins=("won", "sum"))
+        .reset_index()
+    )
+    hour_agg["win_rate"] = hour_agg["wins"] / hour_agg["games"]
+    hour_qual = hour_agg[hour_agg["games"] >= 5]
+
+    best_hour = None
+    worst_hour = None
+    if len(hour_qual) > 0:
+        bh = hour_qual.loc[hour_qual["win_rate"].idxmax()]
+        best_hour = {"hour": int(bh["hour"]), "games": int(bh["games"]), "win_rate": round(float(bh["win_rate"]), 4)}
+        wh = hour_qual.loc[hour_qual["win_rate"].idxmin()]
+        worst_hour = {"hour": int(wh["hour"]), "games": int(wh["games"]), "win_rate": round(float(wh["win_rate"]), 4)}
+
+    # Best/worst day (min 10 games)
+    day_agg = (
+        mh_tier.groupby("day_of_week")
+        .agg(games=("won", "size"), wins=("won", "sum"))
+        .reset_index()
+    )
+    day_agg["win_rate"] = day_agg["wins"] / day_agg["games"]
+    day_qual = day_agg[day_agg["games"] >= 10]
+
+    best_day = None
+    worst_day = None
+    if len(day_qual) > 0:
+        bd = day_qual.loc[day_qual["win_rate"].idxmax()]
+        best_day = {"day": bd["day_of_week"], "games": int(bd["games"]), "win_rate": round(float(bd["win_rate"]), 4)}
+        wd = day_qual.loc[day_qual["win_rate"].idxmin()]
+        worst_day = {"day": wd["day_of_week"], "games": int(wd["games"]), "win_rate": round(float(wd["win_rate"]), 4)}
+
+    return {
+        "heatmap": heatmap,
+        "best_hour": best_hour,
+        "worst_hour": worst_hour,
+        "best_day": best_day,
+        "worst_day": worst_day,
+    }
+
+
+def _compute_overview(mh_tier):
+    """Compute basic overview stats for a time tier."""
+    if len(mh_tier) == 0:
+        return {
+            "games": 0, "wins": 0, "win_rate": None,
+            "avg_kills": None, "avg_deaths": None, "avg_assists": None,
+            "kda_ratio": None,
+        }
+
+    games = len(mh_tier)
+    wins = int(mh_tier["won"].sum())
+    win_rate = round(wins / games, 4)
+    avg_kills = round(float(mh_tier["kills"].mean()), 2)
+    avg_deaths = round(float(mh_tier["deaths"].mean()), 2)
+    avg_assists = round(float(mh_tier["assists"].mean()), 2)
+    total_kills = int(mh_tier["kills"].sum())
+    total_deaths = int(mh_tier["deaths"].sum())
+    total_assists = int(mh_tier["assists"].sum())
+    kda_ratio = round((total_kills + total_assists) / max(total_deaths, 1), 2)
+
+    return {
+        "games": games,
+        "wins": wins,
+        "win_rate": win_rate,
+        "avg_kills": avg_kills,
+        "avg_deaths": avg_deaths,
+        "avg_assists": avg_assists,
+        "kda_ratio": kda_ratio,
+    }
+
+
+def _compute_best_worst_heroes(player_heroes_or_matches, is_alltime, hero_names_lookup=None):
+    """Compute best and worst heroes by win rate (min 5 games)."""
+    if is_alltime:
+        # Use player_heroes df directly
+        df = player_heroes_or_matches.copy()
+        qualified = df[df["games"] >= 5].copy()
+        if len(qualified) == 0:
+            return [], []
+        qualified = qualified.sort_values("win_rate", ascending=False)
+        best = qualified.head(5)[["hero_name", "games", "wins", "win_rate"]].to_dict("records")
+        worst = qualified.tail(5).sort_values("win_rate")[["hero_name", "games", "wins", "win_rate"]].to_dict("records")
+    else:
+        # Group match_history by hero_id
+        mh = player_heroes_or_matches
+        hero_stats = (
+            mh.groupby("hero_id")
+            .agg(games=("won", "size"), wins=("won", "sum"))
+            .reset_index()
+        )
+        if len(hero_stats) == 0:
+            return [], []
+        hero_stats["win_rate"] = round(hero_stats["wins"] / hero_stats["games"], 4)
+        # Merge hero names
+        if hero_names_lookup is not None:
+            hero_stats["hero_name"] = hero_stats["hero_id"].map(hero_names_lookup).fillna("Unknown")
+        else:
+            hero_stats["hero_name"] = "Unknown"
+        qualified = hero_stats[hero_stats["games"] >= 5].copy()
+        if len(qualified) == 0:
+            return [], []
+        qualified = qualified.sort_values("win_rate", ascending=False)
+        best = qualified.head(5)[["hero_name", "games", "wins", "win_rate"]].to_dict("records")
+        worst = qualified.tail(5).sort_values("win_rate")[["hero_name", "games", "wins", "win_rate"]].to_dict("records")
+
+    return best, worst
+
+
+def _compute_teammates(player_peers):
+    """Compute best and worst teammates by win rate (min 10 games)."""
+    if len(player_peers) == 0:
+        return [], []
+
+    qualified = player_peers[player_peers["with_games"] >= 10].copy()
+    if len(qualified) == 0:
+        return [], []
+
+    qualified = qualified.sort_values("with_win_rate", ascending=False)
+    best = qualified.head(5).apply(
+        lambda r: {
+            "peer_name": r["peer_name"],
+            "games": int(r["with_games"]),
+            "wins": int(r["with_win"]),
+            "win_rate": round(float(r["with_win_rate"]), 4),
+        }, axis=1
+    ).tolist()
+
+    worst = qualified.tail(5).sort_values("with_win_rate").apply(
+        lambda r: {
+            "peer_name": r["peer_name"],
+            "games": int(r["with_games"]),
+            "wins": int(r["with_win"]),
+            "win_rate": round(float(r["with_win_rate"]), 4),
+        }, axis=1
+    ).tolist()
+
+    return best, worst
+
+
+def _compute_party_perf(mh_tier):
+    """Compute performance by party size."""
+    if len(mh_tier) == 0:
+        return []
+
+    df = mh_tier.dropna(subset=["party_size"]).copy()
+    if len(df) == 0:
+        return []
+
+    df["party_size"] = df["party_size"].astype(int)
+    grouped = (
+        df.groupby("party_size")
+        .agg(games=("won", "size"), wins=("won", "sum"))
+        .reset_index()
+    )
+    grouped["win_rate"] = round(grouped["wins"] / grouped["games"], 4)
+
+    return [
+        {
+            "party_size": int(r["party_size"]),
+            "games": int(r["games"]),
+            "wins": int(r["wins"]),
+            "win_rate": float(r["win_rate"]),
+        }
+        for _, r in grouped.iterrows()
+    ]
+
+
+def _compute_vs_group(player_totals_row, group_avgs):
+    """Compare a player's stats vs the group average."""
+    stats = [
+        "kills", "deaths", "assists", "gold_per_min",
+        "xp_per_min", "hero_damage", "tower_damage", "last_hits",
+    ]
+    result = {}
+    for stat in stats:
+        col = f"{stat}_avg"
+        player_val = float(player_totals_row[col]) if col in player_totals_row.index else None
+        group_val = float(group_avgs[col]) if col in group_avgs.index else None
+        result[stat] = {
+            "player": round(player_val, 2) if player_val is not None else None,
+            "group_avg": round(group_val, 2) if group_val is not None else None,
+        }
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 10. Per-player detailed profiles — main function
+# ---------------------------------------------------------------------------
+
+def compute_player_profiles_detailed(data: dict) -> dict:
+    """Compute detailed per-player profiles with fun and competitive insights."""
+    match_history = data["match_history"]
+    heroes_played = data["heroes_played"]
+    peers = data["peers"]
+    totals = data["totals"]
+    heroes_df = data["heroes"]
+    wordclouds = data["wordclouds"]
+
+    # Build hero_names lookup from heroes_played (hero_id -> hero_name)
+    hero_names_lookup = dict(
+        zip(heroes_played["hero_id"], heroes_played["hero_name"])
+    )
+    # Also fill from heroes_df in case some are missing
+    for _, row in heroes_df.iterrows():
+        hero_names_lookup.setdefault(int(row["id"]), row["localized_name"])
+
+    # Precompute group averages from totals
+    stat_cols = [
+        "kills_avg", "deaths_avg", "assists_avg", "gold_per_min_avg",
+        "xp_per_min_avg", "hero_damage_avg", "tower_damage_avg", "last_hits_avg",
+    ]
+    group_avgs = totals[stat_cols].mean()
+
+    result = {}
+
+    for player_name, account_id in PLAYERS.items():
+        player_matches = match_history[match_history["account_id"] == account_id]
+        player_heroes = heroes_played[heroes_played["account_id"] == account_id]
+        player_peers = peers[peers["player_name"] == player_name]
+        player_totals_rows = totals[totals["account_id"] == account_id]
+
+        if len(player_matches) == 0:
+            continue
+
+        total_games = len(player_matches)
+
+        # ---- FUN INSIGHTS (mostly all-time) ----
+        records = _compute_records(player_matches, hero_names_lookup)
+        signature_hero = _compute_signature_hero(player_heroes)
+        hero_diversity = _compute_hero_diversity(player_heroes, total_games)
+        comfort_zone = _compute_comfort_zone(player_heroes, heroes_df)
+
+        # Chat personality from wordclouds
+        chat_personality = wordclouds.get(player_name, {})
+        # Top 10 words
+        sorted_words = sorted(chat_personality.items(), key=lambda x: -x[1])[:10]
+        chat_personality_top = [{"word": w, "count": c} for w, c in sorted_words]
+
+        # Play times per tier
+        play_times = {}
+        for tier_name in TIME_TIERS:
+            mh_tier = _filter_time(player_matches, tier_name)
+            play_times[tier_name] = _compute_play_times(mh_tier)
+
+        fun = {
+            "records": records,
+            "signature_hero": signature_hero,
+            "hero_diversity": hero_diversity,
+            "comfort_zone": comfort_zone,
+            "chat_personality": chat_personality_top,
+            "play_times": play_times,
+        }
+
+        # ---- COMPETITIVE INSIGHTS ----
+        # Overview per tier
+        overview = {}
+        for tier_name in TIME_TIERS:
+            mh_tier = _filter_time(player_matches, tier_name)
+            overview[tier_name] = _compute_overview(mh_tier)
+
+        # Monthly win rate (all-time)
+        mh_copy = player_matches.copy()
+        mh_copy["year_month"] = (
+            mh_copy["year"].astype(str) + "-" + mh_copy["month"].astype(str).str.zfill(2)
+        )
+        monthly = (
+            mh_copy.groupby("year_month")
+            .agg(games=("won", "size"), wins=("won", "sum"))
+            .reset_index()
+        )
+        monthly["win_rate"] = round(monthly["wins"] / monthly["games"], 4)
+        monthly = monthly.sort_values("year_month")
+        win_rate_monthly = [
+            {
+                "year_month": r["year_month"],
+                "games": int(r["games"]),
+                "wins": int(r["wins"]),
+                "win_rate": float(r["win_rate"]),
+            }
+            for _, r in monthly.iterrows()
+        ]
+
+        # Best/worst heroes per tier
+        best_heroes = {}
+        worst_heroes = {}
+        for tier_name in TIME_TIERS:
+            if tier_name == "all":
+                bh, wh = _compute_best_worst_heroes(player_heroes, is_alltime=True)
+            else:
+                mh_tier = _filter_time(player_matches, tier_name)
+                bh, wh = _compute_best_worst_heroes(
+                    mh_tier, is_alltime=False, hero_names_lookup=hero_names_lookup
+                )
+            best_heroes[tier_name] = bh
+            worst_heroes[tier_name] = wh
+
+        # Teammates (all-time from peers)
+        best_teammates, worst_teammates = _compute_teammates(player_peers)
+
+        # Party size performance per tier
+        party_perf = {}
+        for tier_name in TIME_TIERS:
+            mh_tier = _filter_time(player_matches, tier_name)
+            party_perf[tier_name] = _compute_party_perf(mh_tier)
+
+        # Vs group avg (all-time from totals)
+        vs_group = {}
+        if len(player_totals_rows) > 0:
+            vs_group = _compute_vs_group(player_totals_rows.iloc[0], group_avgs)
+
+        competitive = {
+            "overview": overview,
+            "win_rate_monthly": win_rate_monthly,
+            "best_heroes": best_heroes,
+            "worst_heroes": worst_heroes,
+            "best_teammates": best_teammates,
+            "worst_teammates": worst_teammates,
+            "party_size_performance": party_perf,
+            "vs_group_avg": vs_group,
+        }
+
+        profile = {
+            "fun": fun,
+            "competitive": competitive,
+        }
+
+        result[player_name] = _clean_dict(profile)
+
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -806,6 +1324,9 @@ def main():
 
     print("Computing wordcloud insights...")
     insights["wordclouds"] = compute_wordcloud_insights(data)
+
+    print("Computing player profiles (detailed)...")
+    insights["player_profiles_detailed"] = compute_player_profiles_detailed(data)
 
     out_path = DATA_PROCESSED / "insights.json"
     with open(out_path, "w") as f:
