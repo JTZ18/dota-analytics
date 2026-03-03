@@ -7,12 +7,14 @@ Run with: uv run python -m scripts.process
 
 import json
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
 
 from scripts.config import DATA_PROCESSED, DATA_RAW, GAME_MODES, PLAYERS
+
+SGT = timezone(timedelta(hours=8))
 
 
 # ---------------------------------------------------------------------------
@@ -170,7 +172,8 @@ def process_match_history() -> pd.DataFrame:
             won = (is_radiant and radiant_win) or (not is_radiant and not radiant_win)
 
             start_time = m.get("start_time")
-            dt = datetime.fromtimestamp(start_time, tz=timezone.utc) if start_time else None
+            dt_utc = datetime.fromtimestamp(start_time, tz=timezone.utc) if start_time else None
+            dt_sgt = datetime.fromtimestamp(start_time, tz=SGT) if start_time else None
 
             rows.append({
                 "account_id": account_id,
@@ -178,11 +181,11 @@ def process_match_history() -> pd.DataFrame:
                 "match_id": m.get("match_id"),
                 "hero_id": m.get("hero_id"),
                 "start_time": start_time,
-                "datetime": dt.isoformat() if dt else None,
-                "year": dt.year if dt else None,
-                "month": dt.month if dt else None,
-                "hour": dt.hour if dt else None,
-                "day_of_week": dt.strftime("%A") if dt else None,
+                "datetime": dt_utc.isoformat() if dt_utc else None,
+                "year": dt_sgt.year if dt_sgt else None,
+                "month": dt_sgt.month if dt_sgt else None,
+                "hour": dt_sgt.hour if dt_sgt else None,
+                "day_of_week": dt_sgt.strftime("%A") if dt_sgt else None,
                 "duration": m.get("duration"),
                 "game_mode": game_mode,
                 "lobby_type": m.get("lobby_type"),
