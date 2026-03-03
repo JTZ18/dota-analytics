@@ -1,3 +1,4 @@
+import os
 import time
 from pathlib import Path
 
@@ -6,7 +7,17 @@ DATA_RAW = PROJECT_ROOT / "data" / "raw"
 DATA_PROCESSED = PROJECT_ROOT / "data" / "processed"
 
 API_BASE = "https://api.opendota.com/api"
-REQUEST_DELAY = 1.1  # seconds between API calls (60/min limit)
+
+# Load API key from .env if present
+_env_file = PROJECT_ROOT / ".env"
+if _env_file.exists():
+    for line in _env_file.read_text().splitlines():
+        if line.strip() and not line.startswith("#") and "=" in line:
+            key, val = line.split("=", 1)
+            os.environ.setdefault(key.strip(), val.strip())
+
+OPENDOTA_API_KEY = os.environ.get("OPENDOTA_API_KEY")
+REQUEST_DELAY = 0.02 if OPENDOTA_API_KEY else 1.1  # 3000/min with key, 60/min without
 
 PLAYERS = {
     "bread": 107007554,

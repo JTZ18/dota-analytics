@@ -6,7 +6,7 @@ from pathlib import Path
 
 import requests
 
-from scripts.config import API_BASE, REQUEST_DELAY, DATA_RAW
+from scripts.config import API_BASE, REQUEST_DELAY, OPENDOTA_API_KEY
 
 _last_request_time = 0.0
 
@@ -33,6 +33,10 @@ def fetch(endpoint: str, params: dict | None = None, cache_path: Path | None = N
 
     _rate_limit()
     url = f"{API_BASE}{endpoint}"
+    if params is None:
+        params = {}
+    if OPENDOTA_API_KEY:
+        params["api_key"] = OPENDOTA_API_KEY
     resp = requests.get(url, params=params, timeout=30)
     resp.raise_for_status()
     data = resp.json()
